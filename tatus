@@ -1,0 +1,20 @@
+ .github/prompts/mobile-first-responsive.prompt.md |   73 [32m+[m
+ .gitignore                                        |    5 [32m+[m
+ index.html                                        |   13 [32m+[m
+ package-lock.json                                 | 1917 [32m+++++++++++++++++++[m
+ package.json                                      |   24 [32m+[m
+ src/components/AppShell.jsx                       |  339 [32m++++[m
+ src/context/SharpContext.jsx                      |  176 [32m++[m
+ src/data/mockData.js                              |  241 [32m+++[m
+ src/main.jsx                                      |   21 [32m+[m
+ src/pages/ContentPage.jsx                         |  113 [32m++[m
+ src/pages/HomePage.jsx                            |  110 [32m++[m
+ src/pages/InitiativePage.jsx                      |  119 [32m++[m
+ src/pages/PageCommingSoon.jsx                     |   24 [32m+[m
+ src/pages/PlannerPage.jsx                         |  128 [32m++[m
+ src/pages/ProfilePage.jsx                         |   93 [32m+[m
+ src/pages/RewardsPage.jsx                         |   51 [32m+[m
+ src/pages/ScanPage.jsx                            |   92 [32m+[m
+ src/styles/global.css                             |  813 [32m++++++++[m
+ vite.config.js                                    |    6 [32m+[m
+ 19 files changed, 4358 insertions(+)
