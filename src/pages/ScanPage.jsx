@@ -30,7 +30,7 @@ function ScanPage() {
       <section className="scan-page__intro">
         <p className="eyebrow">Earn as you go</p>
         <h1>Scan. Earn.<br />Keep moving.</h1>
-        <p>Enter the code from a participating Sharp Consumer product or experience to add points to your pool.</p>
+        <p>Enter the code from a participating Sharp Consumer product or experience to add Sharp Consumer Points.</p>
       </section>
 
       <section className="scan-panel card" aria-labelledby="scan-heading">
@@ -38,7 +38,7 @@ function ScanPage() {
           <span className="scan-panel__mark" aria-hidden="true"><QrCode size={24} /></span>
           <div>
             <p className="eyebrow">QR code redemption</p>
-            <h2 id="scan-heading">Add points to your pool</h2>
+            <h2 id="scan-heading">Add Sharp Consumer Points</h2>
           </div>
         </div>
         <form className="scan-form" onSubmit={handleSubmit}>
@@ -66,7 +66,7 @@ function ScanPage() {
               <strong>+{result.pointsAwarded} points added</strong>
               <span>{getBrandName(result.brandId)} code redeemed successfully.</span>
             </div>
-            <b>{user.pointsBalance} <small>pool pts</small></b>
+            <b>{user.sharpConsumerPoints} <small>Sharp Consumer Points</small></b>
           </div>
         )}
         {result && !result.success && (
@@ -81,8 +81,8 @@ function ScanPage() {
       </section>
 
       <div className="scan-page__balance">
-        <span>Current pool balance</span>
-        <strong>{user.pointsBalance} <small>points</small></strong>
+        <span>Sharp Consumer Points</span>
+        <strong>{user.sharpConsumerPoints} <small>points</small></strong>
       </div>
       <Link className="text-link" to="/home">Back to home <ArrowRight size={14} aria-hidden="true" /></Link>
     </div>

@@ -246,14 +246,11 @@ function TopBar() {
   return (
     <header className="top-bar">
       <div className="top-bar__row">
-        <button className="top-bar__greeting" type="button" aria-label="Change location">
-          <MapPin size={18} strokeWidth={2.2} aria-hidden="true" />
           <span>Hi, {user.firstName}</span>
-          <ChevronDown size={15} aria-hidden="true" />
-        </button>
+
         <div className="top-bar__actions" aria-label="Account tools">
           <button type="button" aria-label="Notifications"><Bell size={19} aria-hidden="true" /></button>
-          <button type="button" aria-label="View badges" onClick={() => navigate('/profile')}><Trophy size={19} aria-hidden="true" /></button>
+          <button type="button" aria-label="View badges" onClick={() => navigate('/coming-soon')}><Trophy size={19} aria-hidden="true" /></button>
         </div>
       </div>
       <div className="search-wrapper">

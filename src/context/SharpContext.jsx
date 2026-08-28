@@ -75,7 +75,7 @@ export function SharpProvider({ children }) {
       result = { success: true, pointsAwarded: content.pointsValue, badge: getBadgeForPoints(brand, points) }
       return {
         ...current,
-        user: { ...current.user, pointsBalance: current.user.pointsBalance + content.pointsValue },
+        user: { ...current.user, sharpConsumerPoints: current.user.sharpConsumerPoints + content.pointsValue },
         pointBatches: [...current.pointBatches, createPointBatch('content', content.pointsValue, brand.id)],
         completedContentIds: [...current.completedContentIds, contentId],
         brandProgress: {
@@ -97,7 +97,7 @@ export function SharpProvider({ children }) {
       result = { success: true, pointsAwarded: qr.pointsValue, brandId: qr.brandId }
       return {
         ...current,
-        user: { ...current.user, pointsBalance: current.user.pointsBalance + qr.pointsValue },
+        user: { ...current.user, sharpConsumerPoints: current.user.sharpConsumerPoints + qr.pointsValue },
         pointBatches: [...current.pointBatches, createPointBatch('qr-scan', qr.pointsValue, qr.brandId)],
         redeemedQrCodes: [...current.redeemedQrCodes, qr.id],
       }
@@ -105,31 +105,22 @@ export function SharpProvider({ children }) {
     return result
   }
 
-  const redeemReward = (rewardId, source, splitAmounts = {}) => {
+  const redeemReward = (rewardId) => {
     const reward = brands.flatMap((brand) => brand.rewards).find((item) => item.id === rewardId)
     if (!reward) return { success: false, error: 'Reward not found' }
-    if (!['brand', 'shared', 'split'].includes(source)) return { success: false, error: 'Choose a valid redemption source.' }
-    const requestedBrand = typeof splitAmounts === 'number' ? splitAmounts : Number(splitAmounts.brand || 0)
-    const brandAmount = source === 'brand' ? reward.cost : source === 'shared' ? 0 : requestedBrand
-    const sharedAmount = source === 'shared' ? reward.cost : source === 'brand' ? 0 : Number(splitAmounts.shared ?? reward.cost - brandAmount)
-    if (brandAmount < 0 || sharedAmount < 0 || brandAmount + sharedAmount !== reward.cost) return { success: false, error: `Split amounts must total ${reward.cost}.` }
     let result = { success: false, error: 'Not enough balance for this redemption.' }
     setState((current) => {
-      if (current.user.rewardBalance < brandAmount) {
-        result = { success: false, error: `Brand balance needs ${brandAmount} credits, but only ${current.user.rewardBalance} are available.` }
-        return current
-      }
-      if (current.user.pointsBalance < sharedAmount) {
-        result = { success: false, error: `Shared pool needs ${sharedAmount} points, but only ${current.user.pointsBalance} are available.` }
+      if (current.user.sharpConsumerPoints < reward.cost) {
+        result = { success: false, error: `Sharp Consumer Points needs ${reward.cost} points, but only ${current.user.sharpConsumerPoints} are available.` }
         return current
       }
       const voucher = createVoucher(new Set(current.vouchers.map(({ code }) => code)))
       result = { success: true, voucher }
       return {
         ...current,
-        user: { ...current.user, rewardBalance: current.user.rewardBalance - brandAmount, pointsBalance: current.user.pointsBalance - sharedAmount },
-        vouchers: [...current.vouchers, { code: voucher, rewardId, source }],
-        redemptions: [...current.redemptions, { rewardId, source, cost: reward.cost, brandAmount, sharedAmount, voucher, redeemedAt: new Date().toISOString() }],
+        user: { ...current.user, sharpConsumerPoints: current.user.sharpConsumerPoints - reward.cost },
+        vouchers: [...current.vouchers, { code: voucher, rewardId }],
+        redemptions: [...current.redemptions, { rewardId, cost: reward.cost, voucher, redeemedAt: new Date().toISOString() }],
       }
     })
     return result
@@ -155,7 +146,7 @@ export function SharpProvider({ children }) {
 
     setState((current) => ({
       ...current,
-      user: { ...current.user, pointsBalance: current.user.pointsBalance + pointsAwarded },
+      user: { ...current.user, sharpConsumerPoints: current.user.sharpConsumerPoints + pointsAwarded },
       pointBatches: pointsAwarded > 0 ? [...current.pointBatches, createPointBatch('planner', pointsAwarded)] : current.pointBatches,
       plannerPlans: [...current.plannerPlans, createdPlan],
     }))

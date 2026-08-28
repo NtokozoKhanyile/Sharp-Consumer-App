@@ -40,7 +40,7 @@ function HomePage() {
           {brands.map((brand) => {
             const badge = getCurrentBadge(brandProgress[brand.id])
             return (
-              <Link className={`initiative-tile initiative-tile--${brand.id.replace('brand-', '')} card`} key={brand.id} to="/coming-soon">
+              <Link className={`initiative-tile initiative-tile--${brand.id.replace('brand-', '')} card`} key={brand.id} to={`/coming-soon`}>
                 <span className="initiative-tile__mark">
                   <img
                     src={brand.logo}
@@ -79,7 +79,7 @@ function HomePage() {
         {recommendedContent.length > 0 ? (
           <div className="recommended-row" id="recommended">
             {recommendedContent.map(({ brand, ...content }) => (
-              <Link className="content-card card" key={content.id} to="/coming-soon">
+              <Link className="content-card card" key={content.id} to={`/coming-soon`}>
                 <span className="content-card__thumbnail"><img src={content.image} alt="" /></span>
                 <span className="content-card__details">
                   <span className="content-card__tag">{content.type === 'article+quiz' ? 'Popular' : 'New'}</span>

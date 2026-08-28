@@ -71,11 +71,9 @@ function ProfilePage() {
       <section className="profile-section" aria-labelledby="balances-heading">
         <div className="initiative-section-heading"><div><p className="eyebrow">Available now</p><h2 id="balances-heading">Balances</h2></div></div>
         <div className="profile-balances">
-          {brands.map((brand) => <div className="profile-balance" key={brand.id}><span>{brand.name}</span><strong>{brandProgress[brand.id]?.points || 0}</strong><small>progress toward next badge</small></div>)}
-          <div className="profile-balance profile-balance--pool"><span>Shared redeemable pool</span><strong>{user.pointsBalance}</strong><small>points available for any brand reward</small></div>
-          <div className="profile-balance"><span>Brand rewards balance</span><strong>{user.rewardBalance}</strong><small>credits available for any brand reward</small></div>
+          <div className="profile-balance profile-balance--pool"><span>Sharp Consumer Points</span><strong>{user.sharpConsumerPoints}</strong><small>points available for any brand reward</small></div>
         </div>
-        <p className="profile-balance-note">Badge progress is tracked per brand and is not reduced when you redeem. Redeemable balances are shared across all brand catalogs below.</p>
+        <p className="profile-balance-note">Sharp Consumer Points can be redeemed across all brand catalogs below.</p>
         <div className="point-batches">
           <div className="initiative-section-heading"><div><p className="eyebrow">Point batches</p><h3>What makes up your pool</h3></div></div>
           {pointBatches.length === 0 ? <p className="profile-empty">Earn points from an article, quiz, scan or planner to see each batch here.</p> : <div className="point-batch-grid">{pointBatches.map((batch) => <article className="point-batch card" key={batch.id}><span className="point-batch__icon" aria-hidden="true"><Zap size={16} /></span><div className="point-batch__details"><strong>{batch.source === 'qr-scan' ? 'QR scan' : batch.source === 'planner' ? 'Sharp planning' : 'Content completion'}</strong><small>{brands.find((brand) => brand.id === batch.brandId)?.name || 'Sharp Consumer'} · {new Date(batch.earnedDate).toLocaleDateString()}</small></div><b>+{batch.amount} <small>pts</small></b><em><Clock3 size={12} aria-hidden="true" /> Expires {new Date(batch.expiryDate).toLocaleDateString()}</em></article>)}</div>}
@@ -84,7 +82,7 @@ function ProfilePage() {
 
       <section className="profile-section" aria-labelledby="history-heading">
         <div className="initiative-section-heading"><div><p className="eyebrow">Your rewards</p><h2 id="history-heading">Claimed rewards</h2></div><Link className="text-link" to="/rewards/brand-carling">Browse rewards <ArrowRight size={14} aria-hidden="true" /></Link></div>
-        {sortedRedemptions.length === 0 ? <p className="profile-empty card">Your claimed rewards will appear here.</p> : <div className="redemption-list">{sortedRedemptions.map((redemption) => { const reward = brands.flatMap((brand) => brand.rewards).find((item) => item.id === redemption.rewardId); return <article className="redemption-item card" key={redemption.voucher}><span className="redemption-item__icon" aria-hidden="true"><Gift size={18} /></span><div><span className="redemption-item__status"><Check size={12} aria-hidden="true" /> Claimed</span><strong>{reward?.name || 'Reward'}</strong><span>{new Date(redemption.redeemedAt).toLocaleDateString()} · {redemption.source} balance</span></div><b>{redemption.voucher}</b></article> })}</div>}
+        {sortedRedemptions.length === 0 ? <p className="profile-empty card">Your claimed rewards will appear here.</p> : <div className="redemption-list">{sortedRedemptions.map((redemption) => { const reward = brands.flatMap((brand) => brand.rewards).find((item) => item.id === redemption.rewardId); return <article className="redemption-item card" key={redemption.voucher}><span className="redemption-item__icon" aria-hidden="true"><Gift size={18} /></span><div><span className="redemption-item__status"><Check size={12} aria-hidden="true" /> Claimed</span><strong>{reward?.name || 'Reward'}</strong><span>{new Date(redemption.redeemedAt).toLocaleDateString()} · Sharp Consumer Points</span></div><b>{redemption.voucher}</b></article> })}</div>}
       </section>
     </div>
   )

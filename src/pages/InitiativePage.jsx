@@ -40,7 +40,6 @@ function InitiativePage() {
       </section>
     )
   }
-
   const points = brandProgress[brand.id]?.points || 0
   const progress = getProgress(brand, points)
 
@@ -104,10 +103,10 @@ function InitiativePage() {
         {brand.rewards.length === 0 ? <div className="empty-state card">Rewards for this initiative are coming soon.</div> : <div className="reward-preview-list">
           {brand.rewards.slice(0, 2).map((reward) => (
             <article className="reward-preview card" key={reward.id}>
-              <span className="reward-preview__source">{reward.costSource === 'either' ? 'Either balance' : reward.costSource === 'points' ? 'Points' : 'Cash'}</span>
+              <span className="reward-preview__source">Sharp Consumer Points</span>
               <h3>{reward.name}</h3>
               <p>{reward.description}</p>
-              <strong>{reward.cost} <small>{reward.costSource}</small></strong>
+              <strong>{reward.cost} <small>points</small></strong>
             </article>
           ))}
         </div>}
