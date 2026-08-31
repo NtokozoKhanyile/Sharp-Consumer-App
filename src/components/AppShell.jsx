@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Navigate, NavLink, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
-import { ArrowRight, Bell, CalendarDays, ChevronDown, Gift, Home, MapPin, QrCode, Search, SlidersHorizontal, Trophy, UserRound } from 'lucide-react'
+import { ArrowRight, Bell, CalendarDays, Gift, Home, QrCode, Search, SlidersHorizontal, Trophy, UserRound } from 'lucide-react'
 import { useSharp } from '../context/SharpContext'
 import { brands } from '../data/mockData'
 import ContentPage from '../pages/ContentPage'
@@ -26,10 +26,19 @@ function LoginPage() {
   const [isSignUp, setIsSignUp] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [ageEligibility, setAgeEligibility] = useState('')
   const [validationMessage, setValidationMessage] = useState('')
 
   function handleSubmit(event) {
     event.preventDefault()
+    if (ageEligibility === 'under-18') {
+      setValidationMessage('You are below the legal drinking age and cannot access the app. Be #Sharp! Come back when you are 18.')
+      return
+    }
+    if (ageEligibility !== '18-or-over') {
+      setValidationMessage('Please confirm whether you are 18 or older to continue.')
+      return
+    }
     if (!email.trim() || !password.trim()) {
       setValidationMessage('Enter your email and password to continue.')
       return
@@ -41,16 +50,10 @@ function LoginPage() {
 
   return (
     <section className="auth-page">
-      <div className="auth-page__intro">
-        <p className="eyebrow">Sharp Consumer</p>
-        <p className="auth-page__mark" aria-hidden="true">S</p>
-        <h1>{isSignUp ? 'Start your Sharp journey.' : 'Welcome back.'}</h1>
-        <p>One account for the brands, rewards and moments that matter to you.</p>
-      </div>
       <form className="auth-form card" onSubmit={handleSubmit} noValidate>
         <div className="auth-form__heading">
           <p className="eyebrow">{isSignUp ? 'Create account' : 'Sign in'}</p>
-          <h2>{isSignUp ? 'Make it yours.' : 'Pick up where you left off.'}</h2>
+          <h1>{isSignUp ? 'Start your Sharp journey.' : 'Welcome back.'}</h1>
         </div>
         <label htmlFor="auth-email">Email address</label>
         <input
@@ -70,8 +73,37 @@ function LoginPage() {
           autoComplete={isSignUp ? 'new-password' : 'current-password'}
           placeholder="Enter your password"
         />
+        <fieldset className="auth-form__age-gate">
+          <legend>Are you 18 or older?</legend>
+          <label className="auth-form__radio-option">
+            <input
+              type="radio"
+              name="age-eligibility"
+              value="18-or-over"
+              checked={ageEligibility === '18-or-over'}
+              onChange={(event) => {
+                setAgeEligibility(event.target.value)
+                setValidationMessage('')
+              }}
+            />
+            Yes, I am 18 or older
+          </label>
+          <label className="auth-form__radio-option">
+            <input
+              type="radio"
+              name="age-eligibility"
+              value="under-18"
+              checked={ageEligibility === 'under-18'}
+              onChange={(event) => {
+                setAgeEligibility(event.target.value)
+                setValidationMessage('You are below the legal drinking age and cannot access the app. Be #Sharp! Come back when you are 18.')
+              }}
+            />
+            No, I am under 18
+          </label>
+        </fieldset>
         {validationMessage && <p className="auth-form__error" role="alert">{validationMessage}</p>}
-        <button className="auth-form__submit" type="submit">
+        <button className="auth-form__submit" type="submit" disabled={ageEligibility === 'under-18'}>
           {isSignUp ? 'Create account' : 'Log in'} <ArrowRight size={15} aria-hidden="true" />
         </button>
         <p className="auth-form__switch">
@@ -88,23 +120,7 @@ function LoginPage() {
   )
 }
 
-const onboardingQuestions = [
-  {
-    text: 'What is a responsible first step before enjoying a drink?',
-    options: ['Plan a safe way home', 'Drive only a short distance', 'Skip the plan if you feel fine'],
-    correctIndex: 0,
-  },
-  {
-    text: 'What does drinking responsibly mean?',
-    options: ['Knowing your limits and pacing yourself', 'Trying to keep up with everyone', 'Drinking as quickly as possible'],
-    correctIndex: 0,
-  },
-  {
-    text: 'What is the safest choice when you have been drinking?',
-    options: ['Do not drive', 'Have some coffee and drive', 'Wait a few minutes, then drive'],
-    correctIndex: 0,
-  },
-]
+
 
 function OnboardingPage() {
   const navigate = useNavigate()
@@ -144,57 +160,7 @@ function OnboardingPage() {
     navigate('/home', { replace: true })
   }
 
-  return (
-    <section className="onboarding-page">
-      <div className="onboarding-page__intro">
-        <p className="eyebrow">Sharp Consumer</p>
-        <p className="onboarding-page__mark" aria-hidden="true">S</p>
-        <h1>Make every moment a good one.</h1>
-        <p>Sharp Consumer celebrates better choices. Enjoy responsibly, know your limits and always make a safe plan for getting home.</p>
-      </div>
-      <div className="onboarding-panel card">
-        {stage === 'intro' && (
-          <>
-            <p className="eyebrow">Your first step</p>
-            <h2>Ready to get Sharp?</h2>
-            <p>Take three quick questions about responsible consumption. Get two out of three right to unlock your account.</p>
-            <button className="auth-form__submit" type="button" onClick={startQuiz}>Start the quiz <ArrowRight size={15} aria-hidden="true" /></button>
-          </>
-        )}
-        {stage === 'quiz' && (
-          <>
-            <div className="onboarding-panel__progress">
-              <p className="eyebrow">Question {questionIndex + 1} of {onboardingQuestions.length}</p>
-              <span aria-hidden="true">{questionIndex + 1}/3</span>
-            </div>
-            <h2>{currentQuestion.text}</h2>
-            <div className="quiz-options">
-              {currentQuestion.options.map((option, index) => (
-                <button key={option} type="button" onClick={() => selectAnswer(index)}>{option}</button>
-              ))}
-            </div>
-          </>
-        )}
-        {stage === 'results' && (
-          <>
-            <p className="eyebrow">Quiz complete</p>
-            <h2>You scored {score} out of 3.</h2>
-            {score >= 2 ? (
-              <>
-                <p>You have shown you know how to make the moment count responsibly.</p>
-                <button className="auth-form__submit" type="button" onClick={finishOnboarding}>Enter Sharp Consumer <ArrowRight size={15} aria-hidden="true" /></button>
-              </>
-            ) : (
-              <>
-                <p>A little more knowledge makes for better moments. Review the basics and try again.</p>
-                <button className="auth-form__submit" type="button" onClick={startQuiz}>Try again <ArrowRight size={15} aria-hidden="true" /></button>
-              </>
-            )}
-          </>
-        )}
-      </div>
-    </section>
-  )
+
 }
 
 function AuthenticatedRoute({ children, requiresBadge = false, onboardingOnly = false }) {

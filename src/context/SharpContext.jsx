@@ -30,11 +30,24 @@ function createVoucher(existingCodes) {
   return code
 }
 
+function getNameFromEmail(email) {
+  const localPart = email.split('@')[0] || 'Sharp Consumer'
+  const nameParts = localPart
+    .split(/[._-]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+
+  return {
+    firstName: nameParts[0] || 'Sharp',
+    lastName: nameParts.slice(1).join(' '),
+  }
+}
+
 export function SharpProvider({ children }) {
   const [state, setState] = useState({
     user: { ...initialUser },
     pointBatches: [],
-    isAuthenticated: true,
+    isAuthenticated: false,
     completedContentIds: [],
     redeemedQrCodes: [],
     redemptions: [],
@@ -45,10 +58,11 @@ export function SharpProvider({ children }) {
   })
 
   const login = (email) => {
+    const name = getNameFromEmail(email)
     setState((current) => ({
       ...current,
       isAuthenticated: true,
-      user: { ...current.user, email },
+      user: { ...current.user, email, ...name },
     }))
     return { success: true }
   }
@@ -126,18 +140,6 @@ export function SharpProvider({ children }) {
     return result
   }
 
-  const earnSharpConsumerBadge = () => {
-    let result = { success: true, alreadyEarned: false }
-    setState((current) => {
-      if (current.sharpConsumerBadgeEarned) {
-        result = { success: true, alreadyEarned: true }
-        return current
-      }
-      return { ...current, sharpConsumerBadgeEarned: true }
-    })
-    return result
-  }
-
   const addPlannerPlan = (plan) => {
     const safeTransport = ['public-transport', 'rideshare', 'designated-driver', 'walk'].includes(plan.transport)
     const checks = [safeTransport, plan.safeRideHome, plan.paceYourself, plan.noDrinkDriving]
@@ -154,7 +156,7 @@ export function SharpProvider({ children }) {
   }
 
   return (
-    <SharpContext.Provider value={{ ...state, login, logout, completeContent, earnQrPoints, redeemReward, earnSharpConsumerBadge, addPlannerPlan }}>
+    <SharpContext.Provider value={{ ...state, login, logout, completeContent, earnQrPoints, redeemReward, addPlannerPlan }}>
       {children}
     </SharpContext.Provider>
   )
