@@ -106,7 +106,7 @@ function LoginPage() {
         <button className="auth-form__submit" type="submit" disabled={ageEligibility === 'under-18'}>
           {isSignUp ? 'Create account' : 'Log in'} <ArrowRight size={15} aria-hidden="true" />
         </button>
-        <p className="auth-form__switch">
+        {/*<p className="auth-form__switch">
           {isSignUp ? 'Already have an account?' : 'New to Sharp Consumer?'}{' '}
           <button type="button" onClick={() => {
             setIsSignUp((current) => !current)
@@ -114,7 +114,7 @@ function LoginPage() {
           }}>
             {isSignUp ? 'Log in' : 'Sign up'}
           </button>
-        </p>
+        </p> */}
       </form>
     </section>
   )
