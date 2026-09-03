@@ -91,6 +91,11 @@ select {
   padding: 1.25rem;
   border-radius: 12px;
 }
+.auth-form__logo {
+  width: min(100%, 13.5rem);
+  height: auto;
+  margin: 0 0 .65rem;
+}
 .auth-form__heading { margin-bottom: .6rem; }
 .auth-form__mark {
   display: grid;
@@ -211,22 +216,31 @@ select {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+}
+
+.top-bar__identity {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: .8rem;
+}
+
+.top-bar__logo {
+  display: block;
+  flex: 0 0 auto;
+  width: clamp(7.25rem, 16vw, 10rem);
+  height: auto;
 }
 
 .top-bar__greeting {
-  display: inline-flex;
-  align-items: center;
-  gap: .45rem;
-  padding: 0;
-  color: var(--color-gray-900);
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  font: 700 .95rem Poppins, sans-serif;
+  overflow: hidden;
+  color: var(--color-gray-800);
+  font: 600 .8rem/1.2 Inter, sans-serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.top-bar__greeting svg:first-child { color: var(--color-accent); }
-.top-bar__greeting svg:last-child { color: var(--color-gray-500); }
 .eyebrow {
   display: block;
   margin: 0 0 .25rem;
@@ -542,6 +556,9 @@ body { overflow-x: hidden; }
 @media (max-width: 480px) {
   .top-bar { padding-inline: 1rem; }
   .top-bar strong { font-size: .82rem; }
+  .top-bar__identity { gap: .55rem; }
+  .top-bar__logo { width: 6.35rem; }
+  .top-bar__greeting { font-size: .72rem; }
 }
 
 @media (max-width: 720px) {

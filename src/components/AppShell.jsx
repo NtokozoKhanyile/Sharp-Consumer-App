@@ -11,6 +11,7 @@ import PlannerPage from '../pages/PlannerPage'
 import PageCommingSoon from '../pages/PageCommingSoon'
 import RewardsPage from '../pages/RewardsPage'
 import ScanPage from '../pages/ScanPage'
+import sabSharpLogo from '../images/SABSharp.png'
 
 const tabs = [
   { label: 'Home', icon: Home, to: '/home' },
@@ -51,6 +52,7 @@ function LoginPage() {
   return (
     <section className="auth-page">
       <form className="auth-form card" onSubmit={handleSubmit} noValidate>
+        <img className="auth-form__logo" src={sabSharpLogo} alt="SABSharp" />
         <div className="auth-form__heading">
           <p className="eyebrow">{isSignUp ? 'Create account' : 'Sign in'}</p>
           <h1>{isSignUp ? 'Start your Sharp journey.' : 'Welcome back.'}</h1>
@@ -212,7 +214,10 @@ function TopBar() {
   return (
     <header className="top-bar">
       <div className="top-bar__row">
-          <span>Hi, {user.firstName}</span>
+        <div className="top-bar__identity">
+          <img className="top-bar__logo" src={sabSharpLogo} alt="SABSharp" />
+          <span className="top-bar__greeting">Hi, {user.firstName}</span>
+        </div>
 
         <div className="top-bar__actions" aria-label="Account tools">
           <button type="button" aria-label="Notifications"><Bell size={19} aria-hidden="true" /></button>
