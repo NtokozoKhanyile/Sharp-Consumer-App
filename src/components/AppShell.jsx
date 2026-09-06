@@ -9,6 +9,8 @@ import InitiativePage from '../pages/InitiativePage'
 import ProfilePage from '../pages/ProfilePage'
 import PlannerPage from '../pages/PlannerPage'
 import PageCommingSoon from '../pages/PageCommingSoon'
+import AcademyPage from '../pages/AcademyPage'
+import PartnersPage from '../pages/PartnersPage'
 import RewardsPage from '../pages/RewardsPage'
 import ScanPage from '../pages/ScanPage'
 import sabSharpLogo from '../images/SABSharp.png'
@@ -289,6 +291,8 @@ function RoutedContent() {
           <Route path="/content/:contentId" element={<AuthenticatedRoute requiresBadge><ContentPage /></AuthenticatedRoute>} />
           <Route path="/scan" element={<AuthenticatedRoute requiresBadge><ScanPage /></AuthenticatedRoute>} />
           <Route path="/planner" element={<AuthenticatedRoute requiresBadge><PlannerPage /></AuthenticatedRoute>} />
+          <Route path="/academy" element={<AuthenticatedRoute requiresBadge><AcademyPage /></AuthenticatedRoute>} />
+          <Route path="/partners" element={<AuthenticatedRoute requiresBadge><PartnersPage /></AuthenticatedRoute>} />
           <Route path="/coming-soon" element={<AuthenticatedRoute requiresBadge><PageCommingSoon /></AuthenticatedRoute>} />
           <Route path="/rewards/:brandId" element={<AuthenticatedRoute requiresBadge><RewardsPage /></AuthenticatedRoute>} />
           <Route path="/profile" element={<AuthenticatedRoute requiresBadge><ProfilePage /></AuthenticatedRoute>} />

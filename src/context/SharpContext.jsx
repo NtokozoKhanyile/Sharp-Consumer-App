@@ -141,18 +141,13 @@ export function SharpProvider({ children }) {
   }
 
   const addPlannerPlan = (plan) => {
-    const safeTransport = ['public-transport', 'rideshare', 'designated-driver', 'walk'].includes(plan.transport)
-    const checks = [safeTransport, plan.safeRideHome, plan.paceYourself, plan.noDrinkDriving]
-    const pointsAwarded = checks.filter(Boolean).length * 10
-    const createdPlan = { ...plan, id: `plan-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`, pointsAwarded, createdAt: new Date().toISOString() }
+    const createdPlan = { ...plan, id: `plan-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`, createdAt: new Date().toISOString() }
 
     setState((current) => ({
       ...current,
-      user: { ...current.user, sharpConsumerPoints: current.user.sharpConsumerPoints + pointsAwarded },
-      pointBatches: pointsAwarded > 0 ? [...current.pointBatches, createPointBatch('planner', pointsAwarded)] : current.pointBatches,
       plannerPlans: [...current.plannerPlans, createdPlan],
     }))
-    return { success: true, pointsAwarded, plan: createdPlan }
+    return { success: true, plan: createdPlan }
   }
 
   return (

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { CalendarDays, CarFront, Check, Clock3, MapPin, Plus, ShieldCheck } from 'lucide-react'
+import { CalendarDays, CarFront, CheckCircle2, Clock3, MapPin, Plus, ShieldCheck, X } from 'lucide-react'
 import { useSharp } from '../context/SharpContext'
 
 const initialForm = {
@@ -27,6 +27,7 @@ function PlannerPage() {
   const { plannerPlans, addPlannerPlan } = useSharp()
   const [form, setForm] = useState(initialForm)
   const [message, setMessage] = useState(null)
+  const [savedPlan, setSavedPlan] = useState(null)
 
   function updateField(event) {
     const { name, value, type, checked } = event.target
@@ -42,7 +43,8 @@ function PlannerPage() {
     }
 
     const result = addPlannerPlan({ ...form, location: form.location.trim() })
-    setMessage({ type: 'success', text: `Plan saved. You earned ${result.pointsAwarded} points for making a Sharp plan.` })
+    setMessage(null)
+    setSavedPlan(result.plan)
     setForm(initialForm)
   }
 
@@ -94,7 +96,7 @@ function PlannerPage() {
               <label><input name="noDrinkDriving" type="checkbox" checked={form.noDrinkDriving} onChange={updateField} /> <span>I won't drink and drive</span></label>
             </fieldset>
             {message && <p className={`planner-message planner-message--${message.type}`} role={message.type === 'error' ? 'alert' : 'status'}>{message.text}</p>}
-            <button className="button button--primary planner-form__submit" type="submit"><ShieldCheck size={16} aria-hidden="true" /> Save plan and earn points</button>
+            <button className="button button--primary planner-form__submit" type="submit"><ShieldCheck size={16} aria-hidden="true" /> Save my Sharp plan</button>
           </form>
         </section>
 
@@ -112,15 +114,28 @@ function PlannerPage() {
                 <article className="planner-plan card" key={plan.id}>
                   <div className="planner-plan__date"><strong>{new Date(`${plan.date}T00:00:00`).getDate()}</strong><span>{new Intl.DateTimeFormat('en-ZA', { month: 'short' }).format(new Date(`${plan.date}T00:00:00`))}</span></div>
                   <div className="planner-plan__details"><strong>{plan.location}</strong><span><Clock3 size={13} aria-hidden="true" /> {formatPlanDate(plan.date)} at {plan.time}</span><span><CarFront size={13} aria-hidden="true" /> {transportOptions.find((option) => option.value === plan.transport)?.label}</span></div>
-                  <span className="planner-plan__points"><Check size={14} aria-hidden="true" /> +{plan.pointsAwarded}</span>
+                  <span className="planner-plan__status"><CheckCircle2 size={15} aria-hidden="true" /> Ready to go</span>
                 </article>
               ))}
             </div>
           ) : (
-            <div className="planner-empty card"><CalendarDays size={25} aria-hidden="true" /><strong>Your calendar is clear.</strong><span>Add your next outing and earn points for planning responsibly.</span></div>
+            <div className="planner-empty card"><CalendarDays size={25} aria-hidden="true" /><strong>Your calendar is clear.</strong><span>Add your next outing and make a responsible plan before you go.</span></div>
           )}
         </section>
       </div>
+
+      {savedPlan && (
+        <div className="planner-success-backdrop" role="presentation">
+          <section className="planner-success card" role="dialog" aria-modal="true" aria-labelledby="planner-success-title">
+            <button className="planner-success__close" type="button" onClick={() => setSavedPlan(null)} aria-label="Close confirmation"><X size={19} aria-hidden="true" /></button>
+            <span className="planner-success__icon" aria-hidden="true"><CheckCircle2 size={30} /></span>
+            <p className="eyebrow">Plan saved</p>
+            <h2 id="planner-success-title">That’s Sharp!</h2>
+            <p>Your plan for <strong>{savedPlan.location}</strong> is locked in. You’re making the smart choice by planning ahead.</p>
+            <button className="button button--primary" type="button" onClick={() => setSavedPlan(null)}>Keep it Sharp</button>
+          </section>
+        </div>
+      )}
     </div>
   )
 }

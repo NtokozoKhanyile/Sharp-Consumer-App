@@ -7,12 +7,13 @@ function ProfilePage() {
   const { user, brandProgress, sharpConsumerBadgeEarned, pointBatches, redemptions } = useSharp()
   const sortedRedemptions = [...redemptions].sort((first, second) => new Date(second.redeemedAt) - new Date(first.redeemedAt))
   const friends = [
-    { name: 'Lerato Mokoena', detail: 'Sharp friend', initials: 'LM' },
-    { name: 'Thabo Dlamini', detail: 'Connected friend', initials: 'TD' },
+    { name: 'Gomolemo Ramathibela', detail: 'Sharp friend', initials: 'GR' },
+    { name: 'Khanyisile Letsolo', detail: 'Connected friend', initials: 'KL' },
+    { name: 'Ntandoyenkosi Mdunge', detail: 'Sharp friend', initials: 'NM' },
   ]
   const emergencyContacts = [
-    { name: 'Nomsa Khanyile', detail: 'Sister', number: '+27 82 555 0148' },
-    { name: 'Safe Ride Support', detail: 'Emergency transport', number: '+27 80 012 3456' },
+    { name: 'Nomzamo Mcunu', detail: 'Trusted contact', number: '+27 82 555 0148' },
+    { name: 'Moketwa Mamabolo', detail: 'Trusted contact', number: '+27 80 012 3456' },
   ]
 
   return (

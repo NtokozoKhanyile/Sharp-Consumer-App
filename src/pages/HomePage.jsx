@@ -40,7 +40,7 @@ function HomePage() {
           {brands.map((brand) => {
             const badge = getCurrentBadge(brandProgress[brand.id])
             return (
-              <Link className={`initiative-tile initiative-tile--${brand.id.replace('brand-', '')} card`} key={brand.id} to={`/coming-soon`}>
+              <Link className={`initiative-tile initiative-tile--${brand.id.replace('brand-', '')} card`} key={brand.id} to={brand.id === 'brand-partner-network' ? '/partners' : brand.id === 'SABSharp-Academy' ? '/academy' : '/coming-soon'}>
                 <span className="initiative-tile__mark">
                   <img
                     src={brand.logo}
@@ -61,13 +61,13 @@ function HomePage() {
               </Link>
             )
           })}
-          {/*<a className="initiative-tile initiative-tile--more card" href="#recommended">
+          <Link className="initiative-tile initiative-tile--more card" to="/coming-soon">
             <span className="initiative-tile__mark" aria-hidden="true"><Plus size={24} /></span>
             <span className="initiative-tile__body">
               <strong>More initiatives</strong>
               <span className="initiative-tile__badge">Discover what is next</span>
             </span>
-          </a> */}
+          </Link>
         </div>}
       </section>
 

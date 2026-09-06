@@ -111,7 +111,7 @@ export const brands = [
       { id: 'sabsharp-reward-004', name: 'Match-day experience', description: 'Make the next big moment one to remember.', cost: 300 },
     ],
   },
-  {
+  /*{
     id: 'brand-castle',
     name: 'Castle Lager',
     logo: 'https://www.google.com/s2/favicons?domain=castlelager.co.za&sz=128',
@@ -168,7 +168,7 @@ export const brands = [
       { id: 'castle-reward-001', name: 'Castle picnic blanket', description: 'Take a little home comfort outdoors.', cost: 300 },
       { id: 'castle-reward-002', name: 'R150 grocery voucher', description: 'Put it towards your next shared feast.', cost: 150 },
     ],
-  },
+  },*/
   {
     id: 'brand-partner-network',
     name: 'SABSharp Partner Network',
